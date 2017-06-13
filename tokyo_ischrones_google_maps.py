@@ -243,6 +243,6 @@ if __name__ == "__main__":
     center = poly_list[0]["geocode"]
     _, html_file = iso_mapper.plot_map_to_html(api_key, center, poly_list,
                                                file_name='shibuya_ueno_ikebukuro_shimokita',
-                                               zoom_level=10,
+                                               zoom_level=12,
                                                fill_opacity=0.3, line_opacity=1.0,
                                                line_weight=1)
