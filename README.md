@@ -8,12 +8,12 @@ Idea is, I'll probably be happy with an apartment 20- 25 minutes to common distr
 
 Whole code can be [seen here](https://github.com/umutto/Tokyo_Isochrone_Map/blob/master/tokyo_ischrones_google_maps.ipynb) as a Jupyter notebook or sample results can be [seen here](https://umutto.github.io/Tokyo_Isochrone_Map/isochrone_maps/shibuya_ueno_ikebukuro_shimokita_2017-06-13_21-53_.html).
 
-**Requirements:**
+**Requirements:**  
 [googlemaps python API](https://github.com/googlemaps/google-maps-services-python) *  
 **can easily be adapted to use web api*
 
 **Disclaimer:**
-Google maps api does not support transit distances in Tokyo yet... (Learned that after the project) And responses back the walking distances instead. It still works okay for the project's purposes.
+Google maps api does not support transit distances in Tokyo yet... (Learned that after the project) And responses back the walking distances instead. It still works okay for the project's purposes.  
 Another thing is Google maps api may sometimes return an address that it cannot interpret, maybe its better to try/catch or regex them.
 
 ---
