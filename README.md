@@ -17,5 +17,5 @@ Google maps api does not support transit distances in Tokyo yet... (Learned that
 Another thing is Google maps api may sometimes return an address that it cannot interpret, maybe its better to try/catch or regex them.
 
 ---
-Calculations are mostly taken from [isocronut](https://github.com/drewfustin/isocronut).
-Google maps html is a modified version of [gmplot](https://github.com/vgm64/gmplot)
+Calculations are mostly taken from [isocronut](https://github.com/drewfustin/isocronut).  
+Google maps html is a modified version of [gmplot](https://github.com/vgm64/gmplot).
