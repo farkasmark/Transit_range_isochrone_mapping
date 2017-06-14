@@ -236,7 +236,6 @@ if __name__ == "__main__":
         geocode, iso = iso_mapper.get_isochrone(location["address"],
                                                 duration=location["duration"],
                                                 number_of_angles=location["angles"])
-<<<<<<< HEAD
         poly_list.append({"name": location["name"], "geocode": geocode,
                           "coords": iso, "color": location["c"],
                           "duration": location["duration"]})
@@ -270,16 +269,3 @@ if __name__ == "__main__":
                                      strftime("%Y-%m-%d_%H-%M"))
     with open(file_path, "w") as f:
         print(html_file, file=f)
-=======
-        poly_list.append({"name": location["name"],
-                          "geocode": geocode,
-                          "coords": iso,
-                          "color": location["c"]})
-
-    center = poly_list[0]["geocode"]
-    _, html_file = iso_mapper.plot_map_to_html(api_key, center, poly_list,
-                                               file_name='shibuya_ueno_ikebukuro_shimokita',
-                                               zoom_level=12,
-                                               fill_opacity=0.3, line_opacity=1.0,
-                                               line_weight=1)
->>>>>>> 6002e00b4bad3032dff568a9b17fe00cf80652d1
