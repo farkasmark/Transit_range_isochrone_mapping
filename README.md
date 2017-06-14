@@ -6,7 +6,7 @@ This is a dirty mockup project that would hopefully be useful to my real estate 
 Idea is, I'll probably be happy with an apartment 20- 25 minutes to common districts, so I can safely return home after a night of drinking. So this project builds a isochronic map of areas that are close to a busy district.
 
 
-Whole code can be [seen here](https://github.com/umutto/Tokyo_Isochrone_Map/blob/master/tokyo_ischrones_google_maps.ipynb) as a Jupyter notebook or sample results can be [seen here](https://umutto.github.io/Tokyo_Isochrone_Map/isochrone_maps/shibuya_ueno_ikebukuro_shimokita_2017-06-13_21-53_.html).
+Whole code can be [seen here](https://github.com/umutto/Transit_range_isochrone_mapping/blob/master/tokyo_ischrones_google_maps.ipynb) as a Jupyter notebook or sample results can be [seen here](https://umutto.github.io/Transit_range_isochrone_mapping/isochrone_maps/sample.html).
 
 **Requirements:**  
 [googlemaps python API](https://github.com/googlemaps/google-maps-services-python) *  
