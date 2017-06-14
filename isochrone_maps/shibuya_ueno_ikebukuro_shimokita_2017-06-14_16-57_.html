@@ -1,0 +1,146 @@
+
+    <html>
+    <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Simple ischrone map</title>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKhSgstACqpJf2_LodzWwK3cO6ssyHha4&libraries=visualization"></script>
+    <script type="text/javascript">
+        function initialize() {
+            var centerlatlng = new google.maps.LatLng(35.686524672671034, 139.6979100149004);
+            var myOptions = {
+                zoom: 12,
+                center: centerlatlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    var coords_outer = [new google.maps.LatLng(35.69972199437702, 139.56149043379693),new google.maps.LatLng(35.69509555057179, 139.56239379105392),new google.maps.LatLng(35.68761037563792, 139.56909182150872),new google.maps.LatLng(35.64318970100375, 139.65003277257952),new google.maps.LatLng(35.631710634143815, 139.67191475862583),new google.maps.LatLng(35.61782856973637, 139.7019241041394),new google.maps.LatLng(35.615170861601804, 139.70834209778084),new google.maps.LatLng(35.61425509824751, 139.715456),new google.maps.LatLng(35.615170861601804, 139.72256990221913),new google.maps.LatLng(35.61782856973637, 139.72898789586054),new google.maps.LatLng(35.62196822312048, 139.73408202110502),new google.maps.LatLng(35.67677472022251, 139.80027690429773),new google.maps.LatLng(35.68199129186208, 139.80355076118735),new google.maps.LatLng(35.70454305643944, 139.81225757337214),new google.maps.LatLng(35.71379567459256, 139.81406664345678),new google.maps.LatLng(35.73139816598216, 139.8070299268071),new google.maps.LatLng(35.73802443320258, 139.79887106861514),new google.maps.LatLng(35.74227904932711, 139.78858778821726),new google.maps.LatLng(35.74374514280399, 139.7771874),new google.maps.LatLng(35.750351862453485, 139.7105917),new google.maps.LatLng(35.749069089323065, 139.70061550928244),new google.maps.LatLng(35.71396240914632, 139.57422863178414),new google.maps.LatLng(35.711835453100434, 139.56908852918156),new google.maps.LatLng(35.70852275443927, 139.56500981990416),new google.maps.LatLng(35.70434870663232, 139.56239175628397),new google.maps.LatLng(35.69972199437702, 139.56149043379693)];
+        var polygon_outer = new google.maps.Polygon({
+        clickable: false,
+        geodesic: true,
+        fillColor:"#95b8af",
+        fillOpacity:0.3,
+        paths:coords_outer,
+        strokeColor:"#95b8af",
+        strokeOpacity:0,
+        strokeWeight:0
+        });
+        polygon_outer.setMap(map);
+        var coords_Shibuya = [new google.maps.LatLng(35.692653123154486, 139.6962764),new google.maps.LatLng(35.68032471343005, 139.70482004756494),new google.maps.LatLng(35.68621705622027, 139.72065467527773),new google.maps.LatLng(35.678762265473836, 139.7298270833388),new google.maps.LatLng(35.66936967266586, 139.73571295326266),new google.maps.LatLng(35.65895919471039, 139.73773703993348),new google.maps.LatLng(35.64855007374389, 139.73570267294892),new google.maps.LatLng(35.63916103357977, 139.72981044943882),new google.maps.LatLng(35.631710634143815, 139.72063804137414),new google.maps.LatLng(35.62692754927904, 139.70908330626224),new google.maps.LatLng(35.63650841789702, 139.6962764),new google.maps.LatLng(35.62692754927904, 139.68346949373773),new google.maps.LatLng(35.631710634143815, 139.67191475862583),new google.maps.LatLng(35.63916103357977, 139.66274235056116),new google.maps.LatLng(35.64855007374389, 139.65685012705106),new google.maps.LatLng(35.65895919471039, 139.6548157600665),new google.maps.LatLng(35.6659033104651, 139.66998650637362),new google.maps.LatLng(35.6721646444581, 139.67391112676117),new google.maps.LatLng(35.68621705622027, 139.67189812472225),new google.maps.LatLng(35.691003693730806, 139.68345921341816)];
+        var polygon_Shibuya = new google.maps.Polygon({
+        clickable: false,
+        geodesic: true,
+        fillColor:"#3ea190",
+        fillOpacity:0.3,
+        paths:coords_Shibuya,
+        strokeColor:"#3ea190",
+        strokeOpacity:0,
+        strokeWeight:0
+        });
+        polygon_Shibuya.setMap(map);
+        var coords_Ueno = [new google.maps.LatLng(35.74374514280399, 139.7771874),new google.maps.LatLng(35.74227904932711, 139.78858778821726),new google.maps.LatLng(35.73802443320258, 139.79887106861514),new google.maps.LatLng(35.73139816598216, 139.8070299268071),new google.maps.LatLng(35.719967809145814, 139.80057204070073),new google.maps.LatLng(35.71379567459256, 139.81406664345678),new google.maps.LatLng(35.70454305643944, 139.81225757337214),new google.maps.LatLng(35.70206596454164, 139.7970750959561),new google.maps.LatLng(35.69765038469296, 139.791635856617),new google.maps.LatLng(35.68532247631531, 139.78857964347594),new google.maps.LatLng(35.68385745719601, 139.7771874),new google.maps.LatLng(35.68532247631531, 139.76579515652404),new google.maps.LatLng(35.6895742797355, 139.75551690985134),new google.maps.LatLng(35.69619707026294, 139.7473580516571),new google.maps.LatLng(35.70454305643944, 139.74211722662787),new google.maps.LatLng(35.71379567459256, 139.74030815654322),new google.maps.LatLng(35.719967809145814, 139.75380275929928),new google.maps.LatLng(35.725533362678554, 139.75729384694853),new google.maps.LatLng(35.73802443320258, 139.75550373138483),new google.maps.LatLng(35.74227904932711, 139.76578701178272)];
+        var polygon_Ueno = new google.maps.Polygon({
+        clickable: false,
+        geodesic: true,
+        fillColor:"#6eb190",
+        fillOpacity:0.3,
+        paths:coords_Ueno,
+        strokeColor:"#6eb190",
+        strokeOpacity:0,
+        strokeWeight:0
+        });
+        polygon_Ueno.setMap(map);
+        var coords_Ikebukuro = [new google.maps.LatLng(35.750351862453485, 139.7105917),new google.maps.LatLng(35.749069089323065, 139.72056789071758),new google.maps.LatLng(35.745346453757826, 139.7295666551792),new google.maps.LatLng(35.73954865963916, 139.736706583751),new google.maps.LatLng(35.73224361395381, 139.74128877128345),new google.maps.LatLng(35.724146691405686, 139.74286523015238),new google.maps.LatLng(35.71605059172563, 139.74128253228116),new google.maps.LatLng(35.708747700337085, 139.73669648883214),new google.maps.LatLng(35.70295256907615, 139.72955656025906),new google.maps.LatLng(35.699232087808426, 139.72056165171315),new google.maps.LatLng(35.69795013754651, 139.7105917),new google.maps.LatLng(35.699232087808426, 139.7006217482869),new google.maps.LatLng(35.70295256907615, 139.69162683974096),new google.maps.LatLng(35.708747700337085, 139.68448691116788),new google.maps.LatLng(35.71605059172563, 139.67990086771889),new google.maps.LatLng(35.724146691405686, 139.67831816984764),new google.maps.LatLng(35.73224361395381, 139.67989462871657),new google.maps.LatLng(35.73954865963916, 139.68447681624906),new google.maps.LatLng(35.745346453757826, 139.6916167448208),new google.maps.LatLng(35.749069089323065, 139.70061550928244)];
+        var polygon_Ikebukuro = new google.maps.Polygon({
+        clickable: false,
+        geodesic: true,
+        fillColor:"#6eb190",
+        fillOpacity:0.3,
+        paths:coords_Ikebukuro,
+        strokeColor:"#6eb190",
+        strokeOpacity:0,
+        strokeWeight:0
+        });
+        polygon_Ikebukuro.setMap(map);
+        var coords_Shimokitazawa = [new google.maps.LatLng(35.683817482102995, 139.6662762),new google.maps.LatLng(35.68271801340344, 139.674820103836),new google.maps.LatLng(35.67952731674371, 139.6825270211394),new google.maps.LatLng(35.67455794427577, 139.68864214389495),new google.maps.LatLng(35.668296610213154, 139.69256688178623),new google.maps.LatLng(35.66135644181488, 139.69391745596963),new google.maps.LatLng(35.65441687657618, 139.6925623122174),new google.maps.LatLng(35.648157121605934, 139.6886347501767),new google.maps.LatLng(35.64318970100375, 139.68251962742048),new google.maps.LatLng(35.64000058343676, 139.67481553426603),new google.maps.LatLng(35.63890171789702, 139.6662762),new google.maps.LatLng(35.64000058343676, 139.65773686573394),new google.maps.LatLng(35.64318970100375, 139.65003277257952),new google.maps.LatLng(35.648157121605934, 139.6439176498233),new google.maps.LatLng(35.65441687657618, 139.63999008778256),new google.maps.LatLng(35.66135644181488, 139.63863494403037),new google.maps.LatLng(35.668296610213154, 139.63998551821376),new google.maps.LatLng(35.67455794427577, 139.64391025610504),new google.maps.LatLng(35.67952731674371, 139.6500253788606),new google.maps.LatLng(35.68271801340344, 139.657732296164)];
+        var polygon_Shimokitazawa = new google.maps.Polygon({
+        clickable: false,
+        geodesic: true,
+        fillColor:"#3ea190",
+        fillOpacity:0.3,
+        paths:coords_Shimokitazawa,
+        strokeColor:"#3ea190",
+        strokeOpacity:0,
+        strokeWeight:0
+        });
+        polygon_Shimokitazawa.setMap(map);
+        var coords_Kichioji = [new google.maps.LatLng(35.714695321402, 139.5799268),new google.maps.LatLng(35.71396240914632, 139.5856249682159),new google.maps.LatLng(35.711835453100434, 139.59076507081846),new google.maps.LatLng(35.70852275443927, 139.59484378009589),new google.maps.LatLng(35.70434870663232, 139.59746184371605),new google.maps.LatLng(35.69972199437702, 139.5983631662031),new google.maps.LatLng(35.69509555057179, 139.59745980894613),new google.maps.LatLng(35.6909222055763, 139.59484048776883),new google.maps.LatLng(35.68761037563792, 139.59076177849133),new google.maps.LatLng(35.685484122403565, 139.58562293344573),new google.maps.LatLng(35.68475147859801, 139.5799268),new google.maps.LatLng(35.685484122403565, 139.57423066655429),new google.maps.LatLng(35.68761037563792, 139.56909182150872),new google.maps.LatLng(35.693856141431695, 139.5699839757416),new google.maps.LatLng(35.69509555057179, 139.56239379105392),new google.maps.LatLng(35.69972199437702, 139.56149043379693),new google.maps.LatLng(35.70434870663232, 139.56239175628397),new google.maps.LatLng(35.70852275443927, 139.56500981990416),new google.maps.LatLng(35.711835453100434, 139.56908852918156),new google.maps.LatLng(35.71396240914632, 139.57422863178414)];
+        var polygon_Kichioji = new google.maps.Polygon({
+        clickable: false,
+        geodesic: true,
+        fillColor:"#ced190",
+        fillOpacity:0.3,
+        paths:coords_Kichioji,
+        strokeColor:"#ced190",
+        strokeOpacity:0,
+        strokeWeight:0
+        });
+        polygon_Kichioji.setMap(map);
+        var coords_Koenji = [new google.maps.LatLng(35.7184782017525, 139.6542166),new google.maps.LatLng(35.71756201945952, 139.66133963197515),new google.maps.LatLng(35.714903214529436, 139.66776495999102),new google.maps.LatLng(35.71076220543191, 139.67286334901007),new google.maps.LatLng(35.70554453589028, 139.6761357334857),new google.maps.LatLng(35.699761103710884, 139.67726206913346),new google.maps.LatLng(35.69397809098533, 139.6761325541515),new google.maps.LatLng(35.68876151958817, 139.672858204739),new google.maps.LatLng(35.68462186787199, 139.66775981571962),new google.maps.LatLng(35.68196416108655, 139.66133645264043),new google.maps.LatLng(35.68104839824752, 139.6542166),new google.maps.LatLng(35.68196416108655, 139.6470967473596),new google.maps.LatLng(35.68462186787199, 139.6406733842804),new google.maps.LatLng(35.68876151958817, 139.63557499526104),new google.maps.LatLng(35.69397809098533, 139.6323006458485),new google.maps.LatLng(35.699761103710884, 139.63117113086656),new google.maps.LatLng(35.70554453589028, 139.6322974665143),new google.maps.LatLng(35.71076220543191, 139.63556985098995),new google.maps.LatLng(35.714903214529436, 139.640668240009),new google.maps.LatLng(35.71756201945952, 139.64709356802484)];
+        var polygon_Koenji = new google.maps.Polygon({
+        clickable: false,
+        geodesic: true,
+        fillColor:"#9ec190",
+        fillOpacity:0.3,
+        paths:coords_Koenji,
+        strokeColor:"#9ec190",
+        strokeOpacity:0,
+        strokeWeight:0
+        });
+        polygon_Koenji.setMap(map);
+        var coords_Nihonbashi = [new google.maps.LatLng(35.70649140175249, 139.7816381),new google.maps.LatLng(35.705575219552124, 139.78876006077974),new google.maps.LatLng(35.70291641486449, 139.79518442272362),new google.maps.LatLng(35.69877540606661, 139.80028204552528),new google.maps.LatLng(35.69355773676729, 139.80355393864056),new google.maps.LatLng(35.68777430468034, 139.80468010571732),new google.maps.LatLng(35.68199129186208, 139.80355076118735),new google.maps.LatLng(35.67677472022251, 139.80027690429773),new google.maps.LatLng(35.67263506820679, 139.79517928149573),new google.maps.LatLng(35.66997736117907, 139.78875688332596),new google.maps.LatLng(35.66906159824751, 139.7816381),new google.maps.LatLng(35.66997736117907, 139.7745193166741),new google.maps.LatLng(35.67263506820679, 139.7680969185043),new google.maps.LatLng(35.67677472022251, 139.76299929570231),new google.maps.LatLng(35.68199129186208, 139.75972543881267),new google.maps.LatLng(35.68777430468034, 139.75859609428272),new google.maps.LatLng(35.69355773676729, 139.75972226135946),new google.maps.LatLng(35.69877540606661, 139.76299415447477),new google.maps.LatLng(35.70291641486449, 139.76809177727642),new google.maps.LatLng(35.705575219552124, 139.7745161392203)];
+        var polygon_Nihonbashi = new google.maps.Polygon({
+        clickable: false,
+        geodesic: true,
+        fillColor:"#3ea190",
+        fillOpacity:0.3,
+        paths:coords_Nihonbashi,
+        strokeColor:"#3ea190",
+        strokeOpacity:0,
+        strokeWeight:0
+        });
+        polygon_Nihonbashi.setMap(map);
+        var coords_Meguro = [new google.maps.LatLng(35.65168490175248, 139.715456),new google.maps.LatLng(35.65076871997523, 139.72257307108686),new google.maps.LatLng(35.64810991639523, 139.72899302319595),new google.maps.LatLng(35.64396890896617, 139.7340871484401),new google.maps.LatLng(35.63875124077388, 139.7373567986395),new google.maps.LatLng(35.632967809109275, 139.73848219623912),new google.maps.LatLng(35.62718479586751, 139.73735362977234),new google.maps.LatLng(35.62196822312048, 139.73408202110502),new google.maps.LatLng(35.61782856973637, 139.72898789586054),new google.maps.LatLng(35.615170861601804, 139.72256990221913),new google.maps.LatLng(35.61425509824751, 139.715456),new google.maps.LatLng(35.615170861601804, 139.70834209778084),new google.maps.LatLng(35.61782856973637, 139.7019241041394),new google.maps.LatLng(35.62196822312048, 139.69682997889493),new google.maps.LatLng(35.62718479586751, 139.6935583702276),new google.maps.LatLng(35.632967809109275, 139.69242980376086),new google.maps.LatLng(35.63875124077388, 139.69355520136045),new google.maps.LatLng(35.64396890896617, 139.69682485155988),new google.maps.LatLng(35.64810991639523, 139.701918976804),new google.maps.LatLng(35.65076871997523, 139.70833892891312)];
+        var polygon_Meguro = new google.maps.Polygon({
+        clickable: false,
+        geodesic: true,
+        fillColor:"#6eb190",
+        fillOpacity:0.3,
+        paths:coords_Meguro,
+        strokeColor:"#6eb190",
+        strokeOpacity:0,
+        strokeWeight:0
+        });
+        polygon_Meguro.setMap(map);
+        var coords_Okubo = [new google.maps.LatLng(35.71543052140199, 139.6987302),new google.maps.LatLng(35.71469760914268, 139.70442842078373),new google.maps.LatLng(35.71257065308728, 139.70956857079796),new google.maps.LatLng(35.709257954414355, 139.7136473176833),new google.maps.LatLng(35.70508390659789, 139.7162654054264),new google.maps.LatLng(35.70045719433896, 139.71716673619665),new google.maps.LatLng(35.69583075053736, 139.71626337058265),new google.maps.LatLng(35.69165740555139, 139.7136440252368),new google.maps.LatLng(35.688345575624766, 139.70956527835128),new google.maps.LatLng(35.68621932239993, 139.7044263859397),new google.maps.LatLng(35.68548667859802, 139.6987302),new google.maps.LatLng(35.68621932239993, 139.6930340140603),new google.maps.LatLng(35.688345575624766, 139.68789512164872),new google.maps.LatLng(35.69165740555139, 139.6838163747632),new google.maps.LatLng(35.69583075053736, 139.68119702941735),new google.maps.LatLng(35.70045719433896, 139.68029366380335),new google.maps.LatLng(35.70508390659789, 139.68119499457356),new google.maps.LatLng(35.709257954414355, 139.6838130823167),new google.maps.LatLng(35.71257065308728, 139.68789182920204),new google.maps.LatLng(35.71469760914268, 139.69303197921627)];
+        var polygon_Okubo = new google.maps.Polygon({
+        clickable: false,
+        geodesic: true,
+        fillColor:"#9ec190",
+        fillOpacity:0.3,
+        paths:coords_Okubo,
+        strokeColor:"#9ec190",
+        strokeOpacity:0,
+        strokeWeight:0
+        });
+        polygon_Okubo.setMap(map);
+        
+        }
+        </script>
+        </head>
+        <body style="margin:0px; padding:0px;" onload="initialize()">
+            <div id="map_canvas" style="width: 100%; height: 100%;"></div>
+        </body>
+        </html>
+
+    

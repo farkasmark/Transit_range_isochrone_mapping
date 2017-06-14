@@ -1,7 +1,9 @@
-from math import cos, sin, tan, pi, radians, degrees, asin, atan2
+from math import cos, sin, pi, radians, degrees, asin, atan2
+import os
 import time
 import datetime
 import googlemaps
+import shapely.geometry as geometry
 
 
 class isochrone:
@@ -26,8 +28,8 @@ class isochrone:
         bearing = radians(angle)
         lat1 = radians(origin["lat"])
         lng1 = radians(origin["lng"])
-        lat2 = asin(sin(lat1) * cos(radius / r) + cos(lat1)
-                    * sin(radius / r) * cos(bearing))
+        lat2 = asin(sin(lat1) * cos(radius / r) + cos(lat1) *
+                    sin(radius / r) * cos(bearing))
         lng2 = lng1 + atan2(sin(bearing) * sin(radius / r) *
                             cos(lat1), cos(radius / r) - sin(lat1) * sin(lat2))
         lat2 = degrees(lat2)
@@ -36,21 +38,20 @@ class isochrone:
         return {"lat": lat2, "lng": lng2}
 
     def get_bearing(self, origin, destination):
-        bearing = atan2(sin((destination["lng"] - origin["lng"]) * pi / 180) *
-                        cos(destination["lat"] * pi / 180),
-                        cos(origin["lat"] * pi / 180) *
-                        sin(destination["lat"] * pi / 180) -
-                        sin(origin["lat"] * pi / 180) *
-                        cos(destination["lat"] * pi / 180) *
-                        cos((destination["lng"] - origin["lng"]) * pi / 180))
+        lat1, lng1 = origin["lat"], origin["lng"]
+        lat2, lng2 = destination["lat"], destination["lng"]
+
+        bearing = atan2(sin((lng2 - lng1) * pi / 180) *
+                        cos(lat2 * pi / 180),
+                        cos(lat1 * pi / 180) * sin(lat2 * pi / 180) -
+                        sin(lat1 * pi / 180) * cos(lat2 * pi / 180) *
+                        cos((lng2 - lng1) * pi / 180))
         bearing = bearing * 180 / pi
         bearing = (bearing + 360) % 360
         return bearing
 
     def sort_points(self, origin, iso):
-        bearings = []
-        for row in iso:
-            bearings.append(self.get_bearing(origin, row))
+        bearings = [self.get_bearing(origin, row) for row in iso]
 
         return [i for (b, i) in sorted(zip(bearings, iso))]
 
@@ -91,8 +92,8 @@ class isochrone:
                                                     transit_routing_preference=self.routing_preference,
                                                     transit_mode=self.transit_mode)
 
-            # google maps gets confused with the returned addresses, so coordinates
-            # are more robust
+            # google maps gets confused with the returned addresses,
+            # so using coordinates are more robust
             data["destination_addresses"] = iso[:]
 
             for i in range(number_of_angles):
@@ -102,14 +103,14 @@ class isochrone:
                     1] == 'mins' else data_duration[0] * 60
                 data_duration = int(data_duration)
 
-                # If selected points duration is smaller than wanted, make it
-                # bigger
+                # If selected point duration is smaller than wanted,
+                # make it bigger
                 if data_duration < (duration - tolerance):
                     rad[i] *= (step_base + step)
                     converged = False
 
-                # Else If selected points duration is larger than wanted, make it
-                # smaller
+                # Else If selected point duration is bigger than wanted,
+                # make it smaller
                 elif data_duration > (duration + tolerance):
                     rad[i] /= (step_base + step)
                     converged = False
@@ -128,7 +129,7 @@ class isochrone:
         return self.sort_points(geocode, iso)
 
     def get_isochrone(self, query_location, number_of_angles=20,
-                      duration=25, tolerance=10, epoch_limit=20):
+                      duration=25, tolerance=10, epoch_limit=15):
         # get latitude and longtitude of the location from google maps
         geocode_result = self.google_maps.geocode(query_location,
                                                   language="en")[0]
@@ -140,10 +141,32 @@ class isochrone:
 
         return geocode, iso
 
+    def create_polygon(self, location, fill_opacity, line_opacity, line_weight):
+        polygon = "var coords_{} = [".format(location["name"])
+        polygon += ",".join(["new google.maps.LatLng({}, {})".
+                             format(i["lat"], i["lng"])
+                             for i in location["coords"]])
+        polygon += "];"
+        polygon += """
+            var polygon_{0} = new google.maps.Polygon({{
+            clickable: false,
+            geodesic: true,
+            fillColor:"#{1}",
+            fillOpacity:{2},
+            paths:coords_{0},
+            strokeColor:"#{1}",
+            strokeOpacity:{3},
+            strokeWeight:{4}
+            }});
+            polygon_{0}.setMap(map);
+            """.format(location["name"], location["color"],
+                       fill_opacity, line_opacity, line_weight)
+
+        return polygon
+
     # build a simple google maps html to display, html is a modified version of gmplot
     # from https://github.com/vgm64/gmplot
-    def plot_map_to_html(self, api_key, center, coords, zoom_level=5,
-                         path='isochrone_maps\\', file_name='',
+    def plot_map_to_html(self, center, coords, zoom_level=5,
                          fill_opacity=0.3, line_opacity=1.0, line_weight=1):
 
         html_text = """
@@ -151,7 +174,7 @@ class isochrone:
         <head>
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-        <title>{}</title>
+        <title>Simple ischrone map</title>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={}&libraries=visualization"></script>
         <script type="text/javascript">
             function initialize() {{
@@ -162,29 +185,11 @@ class isochrone:
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 }};
                 var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-        """.format(file_name, api_key, center["lat"], center["lng"], zoom_level)
+        """.format(self.api_key, center["lat"], center["lng"], zoom_level)
 
         for location in coords:
-            poly_coords = "var coords_{} = [\n".format(location["name"])
-            poly_coords += ",\n".join(["new google.maps.LatLng({}, {})".
-                                       format(i["lat"], i["lng"])
-                                       for i in location["coords"]])
-            poly_coords += "\n];"
-            poly_coords += """
-                \nvar polygon_{0} = new google.maps.Polygon({{
-                clickable: false,
-                geodesic: true,
-                fillColor:"#{1}",
-                fillOpacity:{2},
-                paths:coords_{0},
-                strokeColor:"#{1}",
-                strokeOpacity:{3},
-                strokeWeight:{4}
-                }});
-                polygon_{0}.setMap(map);
-                \n""".format(location["name"], location["color"],
-                             fill_opacity, line_opacity, line_weight)
-            html_text += poly_coords
+            html_text += self.create_polygon(location,
+                                             fill_opacity, line_opacity, line_weight)
 
         html_text += """
             }
@@ -196,16 +201,14 @@ class isochrone:
             </html>
 
         """
-        file_path = "{}{}_{}_.html".format(path, file_name,
-                                           datetime.datetime.now().
-                                           strftime("%Y-%m-%d_%H-%M"))
-        with open(file_path, "w") as f:
-            print(html_text, file=f)
 
-        return html_text, file_path
+        return html_text
 
 
 if __name__ == "__main__":
+    api_key = "YOUR API KEY HERE"
+    iso_mapper = isochrone(api_key)
+
     locations = [
         {"address": "2 Chome Dogenzaka, Shibuya-ku, Tōkyō-to 150-0002, Japan",
          "name": "Shibuya", "duration": 45, "angles": 20, "c": "3ea190"},
@@ -228,21 +231,41 @@ if __name__ == "__main__":
     ]
     poly_list = []
 
-    api_key = "YOUR API KEY HERE"
-    iso_mapper = isochrone(api_key)
-
     for location in locations:
+        print("Processing {}...".format(location["name"]))
         geocode, iso = iso_mapper.get_isochrone(location["address"],
                                                 duration=location["duration"],
                                                 number_of_angles=location["angles"])
-        poly_list.append({"name": location["name"],
-                          "geocode": geocode,
-                          "coords": iso,
-                          "color": location["c"]})
+        poly_list.append({"name": location["name"], "geocode": geocode,
+                          "coords": iso, "color": location["c"],
+                          "duration": location["duration"]})
 
-    center = poly_list[0]["geocode"]
-    _, html_file = iso_mapper.plot_map_to_html(api_key, center, poly_list,
-                                               file_name='shibuya_ueno_ikebukuro_shimokita',
-                                               zoom_level=10,
-                                               fill_opacity=0.3, line_opacity=1.0,
-                                               line_weight=1)
+    print("Done.")
+
+    # Rough outer region approximation to contour the areas in between
+    outer_points = geometry.MultiPoint([(p["lat"], p["lng"])
+                                        for poly in poly_list
+                                        for p in poly["coords"]])
+    outer_polygon = list(outer_points.convex_hull.exterior.coords)
+    centroid = list(outer_points.centroid.coords)[0]
+
+    centroid = {"lat": centroid[0], "lng": centroid[1]}
+    outer_polygon = [{"lat": p[0], "lng":p[1]} for p in outer_polygon]
+
+    outer_wrapper = {"name": "outer", "geocode": centroid,
+                     "coords": outer_polygon, "color": "95b8af",
+                     "duration": 0}
+    poly_map = [outer_wrapper] + poly_list
+
+    # create html file
+    html_file = iso_mapper.plot_map_to_html(centroid, poly_map, zoom_level=12,
+                                            fill_opacity=0.3, line_opacity=0,
+                                            line_weight=0)
+
+    # save to local
+    path = os.path.join(os.path.dirname(__file__),
+                        'isochrone_maps\\shibuya_ueno_ikebukuro_shimokita')
+    file_path = "{}_{}_.html".format(path, datetime.datetime.now().
+                                     strftime("%Y-%m-%d_%H-%M"))
+    with open(file_path, "w") as f:
+        print(html_file, file=f)
