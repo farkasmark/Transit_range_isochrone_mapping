@@ -17,5 +17,4 @@ Whole code can be [seen here](https://github.com/umutto/Transit_range_isochrone_
 - Another thing is Google maps api may sometimes return an address that it cannot interpret, maybe its better to try/catch or regex them.
 
 ---
-Heavy calculations are mostly taken from [isocronut](https://github.com/drewfustin/isocronut).  
-Google maps html is a modified version of generated html from [gmplot](https://github.com/vgm64/gmplot).
+Heavy calculations are mostly taken from [isocronut](https://github.com/drewfustin/isocronut).
