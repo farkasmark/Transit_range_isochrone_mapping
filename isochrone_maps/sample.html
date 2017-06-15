@@ -1,19 +1,136 @@
 
-    <html>
-    <head>
+<html>
+<head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <title>Simple ischrone map</title>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKhSgstACqpJf2_LodzWwK3cO6ssyHha4&libraries=visualization"></script>
-    <script type="text/javascript">
-        function initialize() {
+    <style>
+        #map {
+            height: 100%;
+        }
+
+        .pac-card {
+            margin: 10px 10px 10px 10px;
+            border-radius: 2px 0 0 2px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            background-color: #fff;
+        }
+        
+        #pac-container {
+            padding-bottom: 12px;
+            margin-right: 12px;
+        }
+        
+        .pac-controls {
+            display: inline-block;
+            padding: 5px 11px;
+        }
+        
+        .pac-controls label {
+            font-size: 13px;
+            font-weight: 300;
+        }
+
+        #pac-input {
+            background-color: #fff;
+            font-family: Roboto;
+            font-size: 15px;
+            font-weight: 300;
+            margin-left: 12px;
+            padding: 0 11px 0 13px;
+            text-overflow: ellipsis;
+            width: 400px;
+        }
+        
+        #pac-input:focus {
+            border-color: #4d90fe;
+        }
+    </style>
+    <script>
+        var map;
+
+        function create_map() {
             var centerlatlng = new google.maps.LatLng(35.686524672671034, 139.6979100149004);
             var myOptions = {
                 zoom: 12,
                 center: centerlatlng,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+            map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+        }
+
+        function initAutocomplete() {
+            if (!map) {
+                create_map();
+            }
+            // Create the search box and link it to the UI element.
+            var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            // Bias the SearchBox results towards current map's viewport.
+            map.addListener('bounds_changed', function() {
+                searchBox.setBounds(map.getBounds());
+            });
+
+            var markers = [];
+            // Listen for the event fired when the user selects a prediction and retrieve
+            // more details for that place.
+            searchBox.addListener('places_changed', function() {
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                // Clear out the old markers.
+                markers.forEach(function(marker) {
+                    marker.setMap(null);
+                });
+                markers = [];
+
+                // For each place, get the icon, name and location.
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function(place) {
+                    if (!place.geometry) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+                    var icon = {
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25)
+                    };
+
+                    // Create a marker for each place.
+                    markers.push(new google.maps.Marker({
+                        map: map,
+                        icon: icon,
+                        title: place.name,
+                        position: place.geometry.location
+                    }));
+
+                    if (place.geometry.viewport) {
+                        // Only geocodes have viewport.
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
+        }
+
+        function initialize() {
+            if (!map) {
+                create_map();
+            }
     var coords_outer = [new google.maps.LatLng(35.69972199437702, 139.56149043379693),new google.maps.LatLng(35.69509555057179, 139.56239379105392),new google.maps.LatLng(35.68761037563792, 139.56909182150872),new google.maps.LatLng(35.64318970100375, 139.65003277257952),new google.maps.LatLng(35.631710634143815, 139.67191475862583),new google.maps.LatLng(35.61782856973637, 139.7019241041394),new google.maps.LatLng(35.615170861601804, 139.70834209778084),new google.maps.LatLng(35.61425509824751, 139.715456),new google.maps.LatLng(35.615170861601804, 139.72256990221913),new google.maps.LatLng(35.61782856973637, 139.72898789586054),new google.maps.LatLng(35.62196822312048, 139.73408202110502),new google.maps.LatLng(35.67677472022251, 139.80027690429773),new google.maps.LatLng(35.68199129186208, 139.80355076118735),new google.maps.LatLng(35.70454305643944, 139.81225757337214),new google.maps.LatLng(35.71379567459256, 139.81406664345678),new google.maps.LatLng(35.73139816598216, 139.8070299268071),new google.maps.LatLng(35.73802443320258, 139.79887106861514),new google.maps.LatLng(35.74227904932711, 139.78858778821726),new google.maps.LatLng(35.74374514280399, 139.7771874),new google.maps.LatLng(35.750351862453485, 139.7105917),new google.maps.LatLng(35.749069089323065, 139.70061550928244),new google.maps.LatLng(35.71396240914632, 139.57422863178414),new google.maps.LatLng(35.711835453100434, 139.56908852918156),new google.maps.LatLng(35.70852275443927, 139.56500981990416),new google.maps.LatLng(35.70434870663232, 139.56239175628397),new google.maps.LatLng(35.69972199437702, 139.56149043379693)];
         var polygon_outer = new google.maps.Polygon({
         clickable: false,
@@ -136,11 +253,15 @@
         polygon_Okubo.setMap(map);
         
         }
-        </script>
-        </head>
-        <body style="margin:0px; padding:0px;" onload="initialize()">
-            <div id="map_canvas" style="width: 100%; height: 100%;"></div>
-        </body>
-        </html>
+    </script>
+    <!-- API key used here is free tier and restricted to this application only -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKhSgstACqpJf2_LodzWwK3cO6ssyHha4&libraries=visualization,places&callback=initAutocomplete" async defer></script>
+</head>
 
+<body style="margin:0px; padding:0px;" onload="initialize()">
+    <input id="pac-input" class="controls" type="text" placeholder="場所を検索する" onClick="this.select();">
+    <div id="map" style="width: 100%; height: 100%;"></div>
+</body>
+
+</html>
     

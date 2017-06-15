@@ -170,37 +170,158 @@ class isochrone:
                          fill_opacity=0.3, line_opacity=1.0, line_weight=1):
 
         html_text = """
-        <html>
-        <head>
-        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-        <title>Simple ischrone map</title>
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={}&libraries=visualization"></script>
-        <script type="text/javascript">
-            function initialize() {{
-                var centerlatlng = new google.maps.LatLng({}, {});
-                var myOptions = {{
-                    zoom: {},
-                    center: centerlatlng,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                }};
-                var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-        """.format(self.api_key, center["lat"], center["lng"], zoom_level)
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Simple ischrone map</title>
+    <style>
+        #map {{
+            height: 100%;
+        }}
+
+        .pac-card {{
+            margin: 10px 10px 10px 10px;
+            border-radius: 2px 0 0 2px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            background-color: #fff;
+        }}
+
+        #pac-container {{
+            padding-bottom: 12px;
+            margin-right: 12px;
+        }}
+
+        .pac-controls {{
+            display: inline-block;
+            padding: 5px 11px;
+        }}
+
+        .pac-controls label {{
+            font-size: 13px;
+            font-weight: 300;
+        }}
+
+        #pac-input {{
+            background-color: #fff;
+            font-family: Roboto;
+            font-size: 15px;
+            font-weight: 300;
+            margin-left: 12px;
+            padding: 0 11px 0 13px;
+            text-overflow: ellipsis;
+            width: 400px;
+        }}
+
+        #pac-input:focus {{
+            border-color: #4d90fe;
+        }}
+    </style>
+    <script>
+        var map;
+
+        function create_map() {{
+            var centerlatlng = new google.maps.LatLng({}, {});
+            var myOptions = {{
+                zoom: {},
+                center: centerlatlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }};
+            map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+        }}
+
+        function initAutocomplete() {{
+            if (!map) {{
+                create_map();
+            }}
+            // Create the search box and link it to the UI element.
+            var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            // Bias the SearchBox results towards current map's viewport.
+            map.addListener('bounds_changed', function() {{
+                searchBox.setBounds(map.getBounds());
+            }});
+
+            var markers = [];
+            // Listen for the event fired when the user selects a prediction and retrieve
+            // more details for that place.
+            searchBox.addListener('places_changed', function() {{
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {{
+                    return;
+                }}
+
+                // Clear out the old markers.
+                markers.forEach(function(marker) {{
+                    marker.setMap(null);
+                }});
+                markers = [];
+
+                // For each place, get the icon, name and location.
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function(place) {{
+                    if (!place.geometry) {{
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }}
+                    var icon = {{
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25)
+                    }};
+
+                    // Create a marker for each place.
+                    markers.push(new google.maps.Marker({{
+                        map: map,
+                        icon: icon,
+                        title: place.name,
+                        position: place.geometry.location
+                    }}));
+
+                    if (place.geometry.viewport) {{
+                        // Only geocodes have viewport.
+                        bounds.union(place.geometry.viewport);
+                    }} else {{
+                        bounds.extend(place.geometry.location);
+                    }}
+                }});
+                map.fitBounds(bounds);
+            }});
+        }}
+
+        function initialize() {{
+            if (!map) {{
+                create_map();
+            }}
+    """.format(center["lat"], center["lng"], zoom_level)
 
         for location in coords:
             html_text += self.create_polygon(location,
                                              fill_opacity, line_opacity, line_weight)
 
         html_text += """
-            }
-            </script>
-            </head>
-            <body style="margin:0px; padding:0px;" onload="initialize()">
-                <div id="map_canvas" style="width: 100%; height: 100%;"></div>
-            </body>
-            </html>
+        }}
+    </script>
+    <!-- API key used here is free tier and restricted to this application only -->
+    <script src="https://maps.googleapis.com/maps/api/js?key={}&libraries=visualization,places&callback=initAutocomplete" async defer></script>
+</head>
 
-        """
+<body style="margin:0px; padding:0px;" onload="initialize()">
+    <input id="pac-input" class="controls" type="text" placeholder="場所を検索する" onClick="this.select();">
+    <div id="map" style="width: 100%; height: 100%;"></div>
+</body>
+
+</html>
+        """.format(self.api_key)
 
         return html_text
 
