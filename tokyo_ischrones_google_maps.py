@@ -164,8 +164,7 @@ class isochrone:
 
         return polygon
 
-    # build a simple google maps html to display, html is a modified version of gmplot
-    # from https://github.com/vgm64/gmplot
+    # build a simple google maps html to display
     def plot_map_to_html(self, center, coords, zoom_level=5,
                          fill_opacity=0.3, line_opacity=1.0, line_weight=1):
 
