@@ -9,8 +9,9 @@ Idea is, I'll probably be happy with an apartment 20- 25 minutes to common distr
 Whole code can be [seen here](https://github.com/umutto/Transit_range_isochrone_mapping/blob/master/tokyo_ischrones_google_maps.ipynb) as a Jupyter notebook or sample results can be [seen here](https://umutto.github.io/Transit_range_isochrone_mapping/isochrone_maps/sample.html).
 
 **Requirements:**  
-[googlemaps python API](https://github.com/googlemaps/google-maps-services-python) *  
-**can easily be adapted to use web api if needed*
+[googlemaps python API](https://github.com/googlemaps/google-maps-services-python)*  
+**can be adapted to use web api if needed*  
+[Shapely](https://github.com/Toblerity/Shapely) *required for rough combination of all areas between*  
 
 **Disclaimer:**  
 - Google maps api does not support transit distances in Tokyo yet... (Learned that after starting the project) And responses back the walking distances instead. If you set it to driving, or walking with a longer duration, it still works okay for my purposes. But this should work as intended with google maps distance matrix supported regions.  
