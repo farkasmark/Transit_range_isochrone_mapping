@@ -10,8 +10,8 @@ Whole code can be [seen here](https://github.com/umutto/Transit_range_isochrone_
 
 **Requirements:**  
 [googlemaps python API](https://github.com/googlemaps/google-maps-services-python)*  
-**can be adapted to use web api if needed*  
 [Shapely](https://github.com/Toblerity/Shapely) *required for rough combination of all areas between*  
+**can be adapted to use web api if needed*  
 
 **Disclaimer:**  
 - Google maps api does not support transit distances in Tokyo yet... (Learned that after starting the project) And responses back the walking distances instead. If you set it to driving, or walking with a longer duration, it still works okay for my purposes. But this should work as intended with google maps distance matrix supported regions.  
